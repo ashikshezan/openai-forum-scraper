@@ -62,9 +62,9 @@ DOWNLOAD_DELAY = 3
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    "openai_community_scraper.pipelines.OpenaiCommunityScraperPipeline": 300,
-# }
+ITEM_PIPELINES = {
+    "openai_community_scraper.pipelines.PostgresPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -108,3 +108,9 @@ FEED_URI = 'output.json'
 
 # # Display log messages in the terminal
 # LOG_STDOUT = True
+
+# PostgreSQL connection settings
+POSTGRES_URI = 'localhost'
+POSTGRES_USER = 'shezan'
+POSTGRES_PASS = 'admin'
+POSTGRES_DB = 'scrapy_project'
