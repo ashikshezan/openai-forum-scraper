@@ -94,10 +94,7 @@ FEED_EXPORT_ENCODING = "utf-8"
 # ========== Custom Settings ==========
 
 # # Log file (optional, if you want to save logs to a file)
-# LOG_FILE = 'scrapy.log'
-
-# # Display log messages in the terminal
-# LOG_STDOUT = True
+LOG_FILE = 'scrapy.log'
 
 # PostgreSQL connection settings
 POSTGRES_URI = os.getenv('POSTGRES_URI')

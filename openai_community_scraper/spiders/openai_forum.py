@@ -78,14 +78,20 @@ class OpenAIForumSpider(scrapy.Spider):
                 yield request
                 last_topic_date = created_at
 
-        # Handling pagination
+        # Handling pagination if more topics are available within the date range
         if last_topic_date and last_topic_date > self.number_of_days_ago:
             if page := self.get_next_page_number(data["topic_list"]["more_topics_url"]):
                 yield scrapy.Request(self.topic_listing_url_template.format(page), callback=self.parse)
 
     def parse_topic_detail(self, response):
-        topic_data = response.json()
+        """
+        Callback function to process the topic details page.
 
+        Args:
+            response: The response object with topic details.
+        """
+        # Extracting topic details and yielding TopicDetail items
+        topic_data = response.json()
         topic_detail_example = TopicDetail(
             id=topic_data["id"],
             title=topic_data["title"],
@@ -117,6 +123,15 @@ class OpenAIForumSpider(scrapy.Spider):
         yield topic_detail_example
 
     def get_next_page_number(self, more_topics_url: str) -> str | None:
+        """
+        Extracts the next page number from the pagination URL.
+
+        Args:
+            more_topics_url (str): The URL containing the pagination information.
+
+        Returns:
+            The next page number as a string, or None if not found.
+        """
         parts = more_topics_url.split("page=")
         if len(parts) > 1:
             return parts[1]
