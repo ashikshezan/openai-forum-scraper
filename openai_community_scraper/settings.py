@@ -1,11 +1,8 @@
-# Scrapy settings for openai_community_scraper project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     https://docs.scrapy.org/en/latest/topics/settings.html
-#     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()  # This loads the variables from .env
 
 BOT_NAME = "openai_community_scraper"
 
@@ -63,7 +60,8 @@ DOWNLOAD_DELAY = 3
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    "openai_community_scraper.pipelines.PostgresPipeline": 300,
+    'openai_community_scraper.pipelines.JsonPipeline': None,
+    'openai_community_scraper.pipelines.PostgresPipeline': None,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -92,16 +90,8 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-# ==========
-FEED_FORMAT = 'json'
-FEED_URI = 'output.json'
 
-# # Configure logging
-# LOG_ENABLED = True  # Enable logging
-# LOG_LEVEL = 'DEBUG'  # Set the desired logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-
-# # Log format
-# LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
+# ========== Custom Settings ==========
 
 # # Log file (optional, if you want to save logs to a file)
 # LOG_FILE = 'scrapy.log'
@@ -110,7 +100,9 @@ FEED_URI = 'output.json'
 # LOG_STDOUT = True
 
 # PostgreSQL connection settings
-POSTGRES_URI = 'localhost'
-POSTGRES_USER = 'shezan'
-POSTGRES_PASS = 'admin'
-POSTGRES_DB = 'scrapy_project'
+POSTGRES_URI = os.getenv('POSTGRES_URI')
+POSTGRES_USER = os.getenv('POSTGRES_USER')
+POSTGRES_PASS = os.getenv('POSTGRES_PASS')
+POSTGRES_DB = os.getenv('POSTGRES_DB')
+
+BATCH_SIZE = int(os.environ.get('BATCH_SIZE', 100))
